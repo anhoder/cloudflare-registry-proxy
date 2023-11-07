@@ -2,10 +2,7 @@
 
 ![deploy](https://github.com/ketches/cloudflare-registry-proxy/actions/workflows/deploy.yaml/badge.svg)
 
-> If you're looking for proxy for helm, maybe you can try [cloudflare-helm-proxy](github.com/ciiiii/cloudflare-helm-proxy).
-
 ## Deploy
-[![Deploy to Cloudflare Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/ketches/cloudflare-registry-proxy)
 
 1. Fork this project
 2. Modify the routes map in `index.js`, and commit the changes
@@ -26,3 +23,12 @@
    - `CLOUDFLARE_ACCOUNT_ID`: Cloudflare Account ID
 5. Deploy to Cloudflare Workers (Actions > Deploy to **Cloudflare** Workers)
 6. Add Custom Domains for your Cloudflare Worker as the routes in `index.js`
+
+## Usage
+
+```bash
+# docker pull k8s.gcr.io/pause:3.9
+# use k8s.ketches.cn as the registry proxy =>
+
+docker pull k8s.ketches.cn/pause:3.9
+```
