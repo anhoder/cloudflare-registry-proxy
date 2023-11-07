@@ -1,37 +1,28 @@
-# cloudflare-docker-proxy
+# cloudflare-registry-proxy
 
-![deploy](https://github.com/ciiiii/cloudflare-docker-proxy/actions/workflows/deploy.yaml/badge.svg)
+![deploy](https://github.com/ketches/cloudflare-registry-proxy/actions/workflows/deploy.yaml/badge.svg)
 
 > If you're looking for proxy for helm, maybe you can try [cloudflare-helm-proxy](github.com/ciiiii/cloudflare-helm-proxy).
 
 ## Deploy
-[![Deploy to Cloudflare Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/ciiiii/cloudflare-docker-proxy)
+[![Deploy to Cloudflare Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/ketches/cloudflare-registry-proxy)
 
-1. fork this project
-2. modify the link of the above button to your fork url
-3. click the button, you will be redirected to the deploy page
-
-## Config tutorial
-
-1. use cloudflare worker host: only support proxy one registry
+1. Fork this project
+2. Modify the routes map in `index.js`, and commit the changes
    ```javascript
    const routes = {
-     "${workername}.${username}.workers.dev/": "https://registry-1.docker.io",
+     "docker.ketches.cn": "https://registry-1.docker.io",
+     "quay.ketches.cn": "https://quay.io",
+     "gcr.ketches.cn": "https://gcr.io",
+     "k8s-gcr.ketches.cn": "https://k8s.gcr.io",
+     "k8s.ketches.cn": "https://registry.k8s.io",
+     "ghcr.ketches.cn": "https://ghcr.io",
+     "cloudsmith.ketches.cn": "https://docker.cloudsmith.io",
    };
    ```
-2. use custom domain: support proxy multiple registries route by host
-   - host your domain DNS on cloudflare
-   - add `A` record of xxx.example.com to `192.0.2.1`
-   - deploy this project to cloudflare workers
-   - add `xxx.example.com/*` to HTTP routes of workers
-   - add more records and modify the config as you need
-   ```javascript
-   const routes = {
-     "docker.libcuda.so": "https://registry-1.docker.io",
-     "quay.libcuda.so": "https://quay.io",
-     "gcr.libcuda.so": "https://k8s.gcr.io",
-     "k8s-gcr.libcuda.so": "https://k8s.gcr.io",
-     "ghcr.libcuda.so": "https://ghcr.io",
-   };
-   ```
-
+3. Enable GitHub Actions in your fork (Actions > I understand my workflows, go ahead and enable them)
+4. Add Secrets in your fork (Settings > Secrets > New repository secret)
+   - `CLOUDFLARE_API_TOKEN`: Cloudflare API Token
+   - `CLOUDFLARE_ACCOUNT_ID`: Cloudflare Account ID
+5. Deploy to Cloudflare Workers (Actions > Deploy to **Cloudflare** Workers)
+6. Add Custom Domains for your Cloudflare Worker as the routes in `index.js`

@@ -4,20 +4,20 @@ addEventListener("fetch", (event) => {
 });
 
 const routes = {
-  "docker.libcuda.so": "https://registry-1.docker.io",
-  "quay.libcuda.so": "https://quay.io",
-  "gcr.libcuda.so": "https://gcr.io",
-  "k8s-gcr.libcuda.so": "https://k8s.gcr.io",
-  "k8s.libcuda.so": "https://registry.k8s.io",
-  "ghcr.libcuda.so": "https://ghcr.io",
-  "cloudsmith.libcuda.so": "https://docker.cloudsmith.io",
+  "docker.ketches.cn": "https://registry-1.docker.io",
+  "quay.ketches.cn": "https://quay.io",
+  "gcr.ketches.cn": "https://gcr.io",
+  "k8s-gcr.ketches.cn": "https://k8s.gcr.io",
+  "k8s.ketches.cn": "https://registry.k8s.io",
+  "ghcr.ketches.cn": "https://ghcr.io",
+  "cloudsmith.ketches.cn": "https://docker.cloudsmith.io",
 };
 
 function routeByHosts(host) {
   if (host in routes) {
     return routes[host];
   }
-  if (MODE == "debug") {
+  if (MODE === "debug") {
     return TARGET_UPSTREAM;
   }
   return "";
@@ -37,7 +37,7 @@ async function handleRequest(request) {
     );
   }
   // check if need to authenticate
-  if (url.pathname == "/v2/") {
+  if (url.pathname === "/v2/") {
     const newUrl = new URL(upstream + "/v2/");
     const resp = await fetch(newUrl.toString(), {
       method: "GET",
@@ -46,15 +46,15 @@ async function handleRequest(request) {
     if (resp.status === 200) {
     } else if (resp.status === 401) {
       const headers = new Headers();
-      if (MODE == "debug") {
+      if (MODE === "debug") {
         headers.set(
           "Www-Authenticate",
-          `Bearer realm="${LOCAL_ADDRESS}/v2/auth",service="cloudflare-docker-proxy"`
+          `Bearer realm="${LOCAL_ADDRESS}/v2/auth",service="cloudflare-registry-proxy"`
         );
       } else {
         headers.set(
           "Www-Authenticate",
-          `Bearer realm="https://${url.hostname}/v2/auth",service="cloudflare-docker-proxy"`
+          `Bearer realm="https://${url.hostname}/v2/auth",service="cloudflare-registry-proxy"`
         );
       }
       return new Response(JSON.stringify({ message: "UNAUTHORIZED" }), {
@@ -66,7 +66,7 @@ async function handleRequest(request) {
     }
   }
   // get token
-  if (url.pathname == "/v2/auth") {
+  if (url.pathname === "/v2/auth") {
     const newUrl = new URL(upstream + "/v2/");
     const resp = await fetch(newUrl.toString(), {
       method: "GET",
@@ -82,7 +82,7 @@ async function handleRequest(request) {
     const wwwAuthenticate = parseAuthenticate(authenticateStr);
     return await fetchToken(wwwAuthenticate, url.searchParams);
   }
-  // foward requests
+  // forward requests
   const newUrl = new URL(upstream + url.pathname);
   const newReq = new Request(newUrl, {
     method: request.method,

@@ -13,15 +13,15 @@ jobs:
     runs-on: ubuntu-latest
     name: Build & Deploy
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Use Node.js
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
-          node-version: "12.x"
+          node-version: 16
       - run: npm install
-      - name: Publish
-        uses: cloudflare/wrangler-action@2.0.0
+      - name: Deploy
+        uses: cloudflare/wrangler-action@v3
         with:
-          apiToken: ${{ secrets.CF_API_TOKEN }}
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         env:
-          CF_ACCOUNT_ID: ${{secrets.CF_ACCOUNT_ID}}
+          CLOUDFLARE_ACCOUNT_ID: ${{secrets.CLOUDFLARE_ACCOUNT_ID}}
