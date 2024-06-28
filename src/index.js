@@ -4,13 +4,13 @@ addEventListener("fetch", (event) => {
 });
 
 const routes = {
-  "docker.ketches.cn": "https://registry-1.docker.io",
-  "quay.ketches.cn": "https://quay.io",
-  "gcr.ketches.cn": "https://gcr.io",
-  "k8s-gcr.ketches.cn": "https://k8s.gcr.io",
-  "k8s.ketches.cn": "https://registry.k8s.io",
-  "ghcr.ketches.cn": "https://ghcr.io",
-  "cloudsmith.ketches.cn": "https://docker.cloudsmith.io",
+  "docker.anhoder.com": "https://registry-1.docker.io",
+  "quay.anhoder.com": "https://quay.io",
+  "gcr.anhoder.com": "https://gcr.io",
+  "k8s-gcr.anhoder.com": "https://k8s.gcr.io",
+  "k8s.anhoder.com": "https://registry.k8s.io",
+  "ghcr.anhoder.com": "https://ghcr.io",
+  "cloudsmith.anhoder.com": "https://docker.cloudsmith.io",
 };
 
 function routeByHosts(host) {
